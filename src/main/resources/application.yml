@@ -1,0 +1,10 @@
+#七牛云
+qiniu:
+  AccessKey: GZSw-GtebbRmS9J_2Mqmd3OQu34ACBj3mRjgXaKL
+  SecretKey: wJ-bKl6Cwb9fjSE_Cwv7yuyLx8mjXnVJjb_fuJgm
+  Bucket: room
+  cdn:
+    prefix: http://pu46nfa5r.bkt.clouddn.com/
+
+logging:
+  level: info
