@@ -31,8 +31,8 @@ public class DemoApplication implements CommandLineRunner {
      */
     @Override
     public void run(String... args) throws Exception {
-//        D:\javaProject\controlMeServices\tmp\1.png
-        File target = new File("D:\\javaProject\\controlMeServices\\tmp\\1.png");
+//        D:\javaProject\controlMeServices\tmp\2.png
+        File target = new File("D:\\javaProject\\controlMeServices\\tmp\\2.png");
         qiNiuService.uploadFile(target);
 //        testServer.start();
 //        nettyServer.start();
