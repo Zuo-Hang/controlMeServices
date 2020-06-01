@@ -17,7 +17,7 @@ public class User {
     //密码
     private String password;
     //性别
-    private String Sex;
+    private String sex;
     //邮箱
     private String email;
     //电话号码
@@ -26,23 +26,33 @@ public class User {
     private Integer status;
     //用户注册事件
     private Date createTime;
+    //头像
+    private String headShot;
     //用户上次登录时间
     private Date lastLoginTime;
     //用户上次更新时间
     private Date lastUpdateTime;
 
+//    public User(String phoneNumber, String password) {
+//        this.phoneNumber = phoneNumber;
+//        this.name = phoneNumber;
+//        this.password = password;
+//        this.sex = "男";
+//    }
+
     public User() {
     }
 
-    public User(Integer userId, String name, String password, String sex, String email, String phoneNumber, Integer status, Date createTime, Date lastLoginTime, Date lastUpdateTime) {
+    public User(Integer userId, String name, String password, String sex, String email, String phoneNumber, Integer status, Date createTime, String headShot, Date lastLoginTime, Date lastUpdateTime) {
         this.userId = userId;
         this.name = name;
         this.password = password;
-        Sex = sex;
+        this.sex = sex;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.status = status;
         this.createTime = createTime;
+        this.headShot = headShot;
         this.lastLoginTime = lastLoginTime;
         this.lastUpdateTime = lastUpdateTime;
     }
@@ -71,13 +81,6 @@ public class User {
         this.password = password;
     }
 
-    public String getSex() {
-        return Sex;
-    }
-
-    public void setSex(String sex) {
-        Sex = sex;
-    }
 
     public String getEmail() {
         return email;
@@ -127,17 +130,34 @@ public class User {
         this.lastUpdateTime = lastUpdateTime;
     }
 
+    public String getHeadShot() {
+        return headShot;
+    }
+
+    public void setHeadShot(String headShot) {
+        this.headShot = headShot;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "userId=" + userId +
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
-                ", Sex='" + Sex + '\'' +
+                ", sex='" + sex + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", status=" + status +
                 ", createTime=" + createTime +
+                ", headShot='" + headShot + '\'' +
                 ", lastLoginTime=" + lastLoginTime +
                 ", lastUpdateTime=" + lastUpdateTime +
                 '}';

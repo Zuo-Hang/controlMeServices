@@ -1,8 +1,8 @@
 
-
-
-logging:
-  level: info
+#
+#
+#logging:
+#  level: info
 
 
 #配置数据源
@@ -11,7 +11,7 @@ spring:
     username: root
     password: 123456
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/mybatis
+    url: jdbc:mysql://127.0.0.1:3306/control_me
     type: com.alibaba.druid.pool.DruidDataSource
     #   数据源其他配置
     initialSize: 5
@@ -33,3 +33,8 @@ spring:
 mybatis:
   config-location: classpath:mybatis/mybatis-config.xml
   mapper-locations: classpath:mybatis/mapper/*.xml
+
+  # 关闭HTTP基本验证
+#security:
+#  basic:
+#    enabled: true

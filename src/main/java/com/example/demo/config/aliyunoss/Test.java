@@ -1,4 +1,4 @@
-package com.example.demo.aliyunoss;
+package com.example.demo.config.aliyunoss;
 
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;

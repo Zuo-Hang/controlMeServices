@@ -1,4 +1,4 @@
-package com.example.demo.aliyunoss;
+package com.example.demo.config.aliyunoss;
 
 /**
  * @Author:zuohang
