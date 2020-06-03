@@ -1,83 +1,120 @@
-//package com.example.demo.config;
-//
-//import com.example.demo.security.AuthFilter;
-//import com.example.demo.security.LoginAuthFailHandler;
-//import com.example.demo.security.LoginUrlEntryPoint;
-//import org.springframework.context.annotation.Bean;
-//import org.springframework.security.authentication.AuthenticationManager;
-//import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-//import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-//import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-//import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-//import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-//
-///**
-// * 安全配置
-// * @Author:zuohang
-// * @date:2020/5/13 0013 19:18
-// */
-//
-//@EnableWebSecurity
-//@EnableGlobalMethodSecurity
-//public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-//
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        super.configure(http);
-//        http.addFilterBefore(authFilter(), UsernamePasswordAuthenticationFilter.class);
-//        // 资源访问权限
-//        http.authorizeRequests()
-//                .antMatchers("/admin/login").permitAll() // 管理员登录入口
-//                .antMatchers("/static/**").permitAll() // 静态资源
-//                .antMatchers("/user/login").permitAll() // 用户登录入口
-//                .antMatchers("/admin/**").hasRole("ADMIN")
-//                .antMatchers("/user/**").hasAnyRole("ADMIN", "USER")
-//                .antMatchers("/api/user/**").hasAnyRole("ADMIN",
-//                "USER")
-//                .and()
-//                .formLogin()
-//                .loginProcessingUrl("/login") // 配置角色登录处理入口
-//                .failureHandler(authFailHandler())
-//                .and()
-//                .logout()
-//                .logoutUrl("/logout")
-//                .logoutSuccessUrl("/logout/page")
-//                .deleteCookies("JSESSIONID")
-//                .invalidateHttpSession(true)
-//                .and()
-//                .exceptionHandling()
-//                .authenticationEntryPoint(urlEntryPoint())
-//                .accessDeniedPage("/403");
-//
-//        http.csrf().disable();
-//        http.headers().frameOptions().sameOrigin();
-//    }
-//
-//    @Bean
-//    public AuthFilter authFilter() {
-//        AuthFilter authFilter = new AuthFilter();
-//        authFilter.setAuthenticationManager(authenticationManager());
-//        authFilter.setAuthenticationFailureHandler(authFailHandler());
-//        return authFilter;
-//    }
-//    @Bean
-//    public AuthenticationManager authenticationManager() {
-//        AuthenticationManager authenticationManager = null;
-//        try {
-//            authenticationManager =  super.authenticationManager();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return authenticationManager;
-//    }
-//
-//    @Bean
-//    public LoginAuthFailHandler authFailHandler() {
-//        return new LoginAuthFailHandler(urlEntryPoint());
-//    }
-//
-//    @Bean
-//    public LoginUrlEntryPoint urlEntryPoint() {
-//        return new LoginUrlEntryPoint("/user/login");
-//    }
-//}
+package com.example.demo.config;
+
+
+
+import com.example.demo.config.handler.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.ObjectPostProcessor;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
+
+/**
+ * @Author:zuohang
+ * @date:2020/6/2 0002 9:52
+ */
+
+/**
+ * @Author: Hutengfei
+ * @Description:
+ * @Date Create in 2019/8/28 20:15
+ */
+@Configuration
+@EnableWebSecurity
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    //登录成功处理逻辑
+    @Autowired
+    CustomizeAuthenticationSuccessHandler authenticationSuccessHandler;
+
+    //登录失败处理逻辑
+    @Autowired
+    CustomizeAuthenticationFailureHandler authenticationFailureHandler;
+
+    //权限拒绝处理逻辑
+    @Autowired
+    CustomizeAccessDeniedHandler accessDeniedHandler;
+
+    //匿名用户访问无权限资源时的异常
+    @Autowired
+    CustomizeAuthenticationEntryPoint authenticationEntryPoint;
+
+    //会话失效(账号被挤下线)处理逻辑
+    @Autowired
+    CustomizeSessionInformationExpiredStrategy sessionInformationExpiredStrategy;
+
+    //登出成功处理逻辑
+    @Autowired
+    CustomizeLogoutSuccessHandler logoutSuccessHandler;
+
+    //访问决策管理器
+    @Autowired
+    CustomizeAccessDecisionManager accessDecisionManager;
+
+    //实现权限拦截
+    @Autowired
+    CustomizeFilterInvocationSecurityMetadataSource securityMetadataSource;
+
+    @Autowired
+    private CustomizeAbstractSecurityInterceptor securityInterceptor;
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        //获取用户账号密码及权限信息
+        return new UserDetailsServiceImpl();
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        // 设置默认的加密方式（强hash方式加密）
+        return new BCryptPasswordEncoder();
+        //在注册的时候也使用这种加密方式对密码加密
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService());
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.cors().and().csrf().disable();
+        http.authorizeRequests().
+                antMatchers("/registerUser").permitAll().
+                //antMatchers("/getUser").hasAuthority("query_user").
+                //antMatchers("/**").fullyAuthenticated().
+                        withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
+                    @Override
+                    public <O extends FilterSecurityInterceptor> O postProcess(O o) {
+                        o.setAccessDecisionManager(accessDecisionManager);//决策管理器
+                        o.setSecurityMetadataSource(securityMetadataSource);//安全元数据源
+                        return o;
+                    }
+                }).
+                //登出
+                        and().logout().
+                permitAll().//允许所有用户
+                logoutSuccessHandler(logoutSuccessHandler).//登出成功处理逻辑
+                deleteCookies("JSESSIONID").//登出之后删除cookie
+                //登入
+                        and().formLogin().
+                permitAll().//允许所有用户
+                successHandler(authenticationSuccessHandler).//登录成功处理逻辑
+                failureHandler(authenticationFailureHandler).//登录失败处理逻辑
+                //异常处理(权限拒绝、登录失效等)
+                        and().exceptionHandling().
+                accessDeniedHandler(accessDeniedHandler).//权限拒绝处理逻辑
+                authenticationEntryPoint(authenticationEntryPoint).//匿名用户访问无权限资源时的异常处理
+                //会话管理
+                        and().sessionManagement().
+                maximumSessions(1).//同一账号同时登录最大用户数
+                expiredSessionStrategy(sessionInformationExpiredStrategy);//会话失效(账号被挤下线)处理逻辑
+        http.addFilterBefore(securityInterceptor, FilterSecurityInterceptor.class);
+    }
+}
+

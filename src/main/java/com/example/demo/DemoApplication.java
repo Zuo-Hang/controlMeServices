@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import javax.annotation.Resource;
 
-@MapperScan(value = "com.example.demo.mapper")
+@MapperScan(value = "com.example.demo.dao")
 @SpringBootApplication
 public class DemoApplication implements CommandLineRunner {
 
