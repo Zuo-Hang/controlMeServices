@@ -86,6 +86,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable();
         http.authorizeRequests().
                 antMatchers("/registerUser").permitAll().
+                antMatchers("/addheadshot").permitAll().
                 //antMatchers("/getUser").hasAuthority("query_user").
                 //antMatchers("/**").fullyAuthenticated().
                         withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
