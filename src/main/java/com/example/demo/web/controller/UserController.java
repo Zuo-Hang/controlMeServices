@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 
 /**
@@ -36,10 +35,11 @@ public class UserController {
      * @return
      */
     @GetMapping("/getUser")
-    public JsonResult getUser() {
-        List<SysUser> users = sysUserService.queryAllByLimit(1, 100);
-        System.out.println(users.toArray().toString());
-        return ResultTool.success(users);
+    public JsonResult getUser(int id) {
+        SysUser sysUser = sysUserService.queryById(id);
+//        List<SysUser> users = sysUserService.queryAllByLimit(1, 100);
+//        System.out.println(users.toArray().toString());
+        return ResultTool.success(sysUser);
     }
 
     @GetMapping("/test")
@@ -89,6 +89,7 @@ public class UserController {
         //调用阿里云上传
         String put = aliyunossService.put(file, userId);
         int id = Integer.parseInt(userId);
+        //更新数据库中的头像地址
         SysUser sysUser = sysUserService.queryById(id);
         sysUser.setHeadShot(put);
         SysUser update = sysUserService.update(sysUser);

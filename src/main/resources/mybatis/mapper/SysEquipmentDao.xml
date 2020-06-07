@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.SysEquipmentDao">
+
+    <!--查询单个-->
+    <select id="queryById" resultType="com.example.demo.entity.EquipmentBean">
+        select
+          *
+        from sys_equipment
+        where equ_id = #{id}
+    </select>
+
+    <!--查询单个-->
+    <select id="getAll" resultType="com.example.demo.entity.EquipmentBean">
+        select
+          *
+        from sys_equipment
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="equId" useGeneratedKeys="true" >
+        insert into sys_equipment(equ_id, equ_name, equ_manufacturer,equ_types,equ_status,equ_ip,equ_control_point)
+        values (#{equId}, #{equName}, #{equManufacturer}, #{equTypes}, #{equStatus}, #{equIp}, #{equControlPoint})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update sys_equipment
+        <set>
+            <if test="equName != null and equName != ''">
+                equ_name = #{equName},
+            </if>
+            <if test="equManufacturer != null and equManufacturer != ''">
+                equ_manufacturer = #{equManufacturer},
+            </if>
+            <if test="equTypes != null and equTypes != ''">
+                equ_types = #{equTypes},
+            </if>
+            <if test="equStatus != null">
+                equ_status = #{equStatus},
+            </if>
+            <if test="equIp != null">
+                equ_ip = #{equIp},
+            </if>
+            <if test="equControlPoint != null">
+                equ_control_point = #{equNotes},
+            </if>
+        </set>
+        where id = #{equ_id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from sys_equipment where equ_id = #{id}
+    </delete>
+</mapper>
