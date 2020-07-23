@@ -20,8 +20,13 @@ import java.io.*;
 public class aliyunossTest {
 
     private static String endpoint = "oss-cn-beijing.aliyuncs.com";
+<<<<<<< HEAD
     private static String accessKeyId = "";
     private static String accessKeySecret = "";
+=======
+    private static String accessKeyId = "LTAI4G1oUYXqZyZS43yTfikm";
+    private static String accessKeySecret = "qD1hZ8AsbWaSfSfzvJdsLoQE37DR4b";
+>>>>>>> 5025b44497ff60f19919885236bca5424a767be2
     private static String bucketName = "android-me";
     private static String key = "key";
 
