@@ -22,8 +22,8 @@ public class AliyunossServiceImpl implements AliyunossService {
     @Override
     public String put(File file,String userId) {
         String endpoint = "oss-cn-beijing.aliyuncs.com";
-        String accessKeyId = "LTAI4G1oUYXqZyZS43yTfikm";
-        String accessKeySecret = "qD1hZ8AsbWaSfSfzvJdsLoQE37DR4b";
+        String accessKeyId = "";
+        String accessKeySecret = "";
         String bucketName = "android-me";
         String key = userId+"_"+file.getName();
         // 创建OSSClient实例。
