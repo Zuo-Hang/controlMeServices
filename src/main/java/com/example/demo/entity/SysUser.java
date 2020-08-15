@@ -197,4 +197,28 @@ public class SysUser implements Serializable {
     public void setUpdateUser(Integer updateUser) {
         this.updateUser = updateUser;
     }
+
+    @Override
+    public String toString() {
+        return "SysUser{" +
+                "id=" + id +
+                ", account='" + account + '\'' +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", lastLoginTime=" + lastLoginTime +
+                ", enabled=" + enabled +
+                ", notExpired=" + notExpired +
+                ", accountNotLocked=" + accountNotLocked +
+                ", credentialsNotExpired=" + credentialsNotExpired +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", createUser=" + createUser +
+                ", updateUser=" + updateUser +
+                ", sex='" + sex + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", status=" + status +
+                ", headShot='" + headShot + '\'' +
+                '}';
+    }
 }

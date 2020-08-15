@@ -2,6 +2,7 @@ package com.example.demo;
 
 import com.example.demo.http.TestServer;
 import com.example.demo.simple.NettyServer;
+import com.example.demo.simple.ServerHelloWorld;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -14,7 +15,7 @@ import javax.annotation.Resource;
 public class DemoApplication implements CommandLineRunner {
 
     @Resource
-    private NettyServer nettyServer;
+    private ServerHelloWorld serverHelloWorld;
     @Resource
     private TestServer testServer;
 
@@ -37,6 +38,6 @@ public class DemoApplication implements CommandLineRunner {
         //File target = new File("D:\\javaProject\\controlMeServices\\tmp\\2.png");
         //qiNiuService.uploadFile(target);
 //        testServer.start();
-        nettyServer.start();
+        //serverHelloWorld.start();
     }
 }

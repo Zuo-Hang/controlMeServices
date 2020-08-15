@@ -4,8 +4,10 @@ package com.example.demo.web.controller;
 import com.example.demo.base.JsonResult;
 import com.example.demo.base.ResultTool;
 import com.example.demo.entity.SysUser;
+import com.example.demo.entity.SysUserRoleRelation;
 import com.example.demo.service.AliyunossService;
 import com.example.demo.service.SysUserService;
+import com.example.demo.service.impl.SysUserRoleRelationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +30,8 @@ public class UserController {
     PasswordEncoder passwordEncoder;
     @Autowired
     AliyunossService aliyunossService;
-
+    @Autowired
+    SysUserRoleRelationServiceImpl sysUserRoleRelationServiceImpl;
     /**
      * 获取用户
      *
@@ -57,10 +60,15 @@ public class UserController {
     public JsonResult registerUser(SysUser user) {
         System.out.println(user);
         user.setAccount(user.getUserName());
+        user.setHeadShot("defult.png");
         String encode = passwordEncoder.encode(user.getPassword());
         user.setPassword(encode);
         SysUser insert = sysUserService.insert(user);
-        //userMapper.insertUser(user);
+        System.out.println(insert);
+        SysUserRoleRelation sysUserRoleRelation = new SysUserRoleRelation();
+        sysUserRoleRelation.setUser_id(insert.getId());
+        sysUserRoleRelation.setRole_id(1);
+        sysUserRoleRelationServiceImpl.insertrole(sysUserRoleRelation);
 
         return ResultTool.success(insert);
     }
@@ -93,6 +101,22 @@ public class UserController {
         SysUser sysUser = sysUserService.queryById(id);
         sysUser.setHeadShot(put);
         SysUser update = sysUserService.update(sysUser);
+        return ResultTool.success(update);
+    }
+
+    /**
+     * 更新信息
+     *
+     * @param user
+     * @return
+     */
+    @PostMapping("/updateuser")
+    public JsonResult updateuser(SysUser user) {
+        System.out.println(user);
+        user.setAccount(user.getUserName());
+        String encode = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encode);
+        SysUser update = sysUserService.update(user);
         return ResultTool.success(update);
     }
 }

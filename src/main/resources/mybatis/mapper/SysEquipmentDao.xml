@@ -43,10 +43,10 @@
                 equ_ip = #{equIp},
             </if>
             <if test="equControlPoint != null">
-                equ_control_point = #{equNotes},
+                equ_control_point = #{equControlPoint},
             </if>
         </set>
-        where id = #{equ_id}
+        where equ_id = #{equId}
     </update>
 
     <!--通过主键删除-->

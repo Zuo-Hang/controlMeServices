@@ -39,7 +39,7 @@ public interface SysEquipmentDao {
      * @param equipmentBean 实例对象
      * @return 实例对象
      */
-    EquipmentBean update(EquipmentBean equipmentBean);
+    int update(EquipmentBean equipmentBean);
 
     /**
      * 通过主键删除数据

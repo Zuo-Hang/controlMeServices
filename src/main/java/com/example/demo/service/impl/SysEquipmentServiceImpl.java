@@ -3,6 +3,7 @@ package com.example.demo.service.impl;
 import com.example.demo.dao.SysEquipmentDao;
 import com.example.demo.entity.EquipmentBean;
 import com.example.demo.service.SysEquipmentService;
+import com.example.demo.simple.ClientHelloWorld;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -15,6 +16,8 @@ import java.util.List;
  */
 @Service("sysEquipmentService")
 public class SysEquipmentServiceImpl implements SysEquipmentService {
+@Resource
+    ClientHelloWorld clientHelloWorld;
 
     @Resource
     SysEquipmentDao sysEquipmentDao;
@@ -37,11 +40,23 @@ public class SysEquipmentServiceImpl implements SysEquipmentService {
 
     @Override
     public EquipmentBean update(EquipmentBean equipmentBean) {
-        return sysEquipmentDao.update(equipmentBean);
+        sysEquipmentDao.update(equipmentBean);
+        return equipmentBean;
     }
 
     @Override
     public boolean deleteById(Integer id) {
         return this.sysEquipmentDao.deleteById(id)>0;
+    }
+
+    /**
+     * 控制功能
+     * @param id
+     * @return
+     */
+    @Override
+    public boolean control(Integer id) {
+        clientHelloWorld.start(id);
+        return false;
     }
 }

@@ -84,17 +84,14 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into sys_user(account, user_name, password)
-        values (#{account}, #{userName}, #{password})
+        insert into sys_user(account, user_name, password,head_shot)
+        values (#{account}, #{userName}, #{password},#{headShot})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
         update sys_user
         <set>
-            <if test="account != null and account != ''">
-                account = #{account},
-            </if>
             <if test="userName != null and userName != ''">
                 user_name = #{userName},
             </if>
@@ -131,6 +128,9 @@
             <if test="headShot != null">
                 head_shot = #{headShot},
             </if>
+            <if test="email != null">
+                email = #{email},
+            </if>
         </set>
         where id = #{id}
     </update>
@@ -144,4 +144,5 @@
     <select id="selectByName" resultType="com.example.demo.entity.SysUser">
         select * from sys_user where account = #{userName};
     </select>
+
 </mapper>

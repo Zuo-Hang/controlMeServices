@@ -87,6 +87,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().
                 antMatchers("/getUser").permitAll().
                 antMatchers("/registerUser").permitAll().
+                antMatchers("/updateuser").permitAll().
                 antMatchers("/addheadshot").permitAll().
                 //antMatchers("/getUser").hasAuthority("query_user").
                 //antMatchers("/**").fullyAuthenticated().

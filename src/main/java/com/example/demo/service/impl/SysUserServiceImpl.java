@@ -52,7 +52,7 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public SysUser insert(SysUser sysUser) {
         this.sysUserDao.insert(sysUser);
-        return sysUser;
+        return this.queryById(sysUser.getId());
     }
 
     /**
@@ -82,4 +82,6 @@ public class SysUserServiceImpl implements SysUserService {
     public SysUser selectByName(String userName) {
         return this.sysUserDao.selectByName(userName);
     }
+
+
 }

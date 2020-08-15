@@ -55,4 +55,24 @@ public class EquipmentController {
         //List<EquipmentBean> all = sysEquipmentService.getAll();
         return ResultTool.success(b);
     }
+
+    @GetMapping("/control")
+    public JsonResult control(int id){
+        EquipmentBean equipmentBean = sysEquipmentService.queryById(id);
+        System.out.println(equipmentBean);
+        Integer equControlPoint = equipmentBean.getEquControlPoint();
+        String string="设备打开成功！";
+        if(equControlPoint==null||equControlPoint==0){
+            sysEquipmentService.control(1);
+            equipmentBean.setEquControlPoint(1);
+            string="设备打开成功！";
+        }else{
+            sysEquipmentService.control(0);
+            equipmentBean.setEquControlPoint(0);
+            string="设备关闭成功！";
+        }
+        sysEquipmentService.update(equipmentBean);
+        System.out.println(equipmentBean);
+        return ResultTool.success(string);
+    }
 }
